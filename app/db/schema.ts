@@ -1,0 +1,5 @@
+import {sqliteTable,text,integer,primaryKey,index} from "drizzle-orm/sqlite-core";
+export const profiles=sqliteTable("profiles",{userId:text("user_id").primaryKey(),body:text("body").notNull(),sources:text("sources").notNull().default('{"boards":[],"apify":false}'),revision:integer("revision").notNull().default(0),lockUntil:integer("lock_until").notNull().default(0)});
+export const listings=sqliteTable("listings",{userId:text("user_id").notNull(),id:text("id").notNull(),body:text("body").notNull(),status:text("status").notNull().default("new"),fingerprint:text("fingerprint").notNull(),revision:integer("revision").notNull(),updatedAt:text("updated_at").notNull()},t=>[primaryKey({columns:[t.userId,t.id]})]);
+export const runs=sqliteTable("runs",{id:text("id").primaryKey(),userId:text("user_id").notNull(),startedAt:text("started_at").notNull(),finishedAt:text("finished_at"),status:text("status").notNull(),imported:integer("imported").notNull().default(0),message:text("message").notNull().default("")},t=>[index("idx_runs_user_started").on(t.userId,t.startedAt)]);
+
